@@ -1,5 +1,7 @@
 #Do not track
 
+# Compilation files
 *.pdf
 *.log
 *.fdb_latexmk
+*.fls
