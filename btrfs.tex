@@ -14,7 +14,7 @@
 
 \author[1]{Giovanni Crepaldi}
 \author[2]{Lucas Marcon Zampieri}
-\author[3]{Mauricio Sscherrer}
+\author[3]{Mauricio Scherer}
 \affil[1]{giovannecrepaldi@gmail.com}
 \affil[2]{zampierilucas@unisinos.br}
 \affil[3]{mauricio.sscherer@gmail.com} 
@@ -32,7 +32,21 @@ Porto Alegre -- RS -- Brazil
 
 \maketitle
 
-\section{Informações gerais} \label{sec:firstpage}
+\section{Informações gerais} 
+
+Btrfs é um sistema de arquivos de cópia em gravação (COW) para Linux, com foco na tolerância de
+falhas, reparo e administração fácil.
+
+Desenvolvido em conjunto com várias empresas e licenciada pela GLP, além de ser opensource.
+O sistema de arquivos Btrfs é estável, significa que não se projeta mudanças em sua estrutura, a não
+ser que seja por razões muito fortes.
+
+A base de código está em constante desenvolvimento, garantindo que ele permaneça estável, rápido
+e cada vez melhor, permitindo que o sistema fique cada vez melhor a cada nova verão do Linux e por
+esse motivo é sempre recomendável os usuários a executarem o Kernel mais moderno.
+
+O sistema possui uma ampla gama de recursos, alguns dos recursos são, armazenamento de arquivos baseado em extensão, embalagens de arquivos pequenos com economia de espaço, alocação dinâmica de inode, reconhecimento de SSD (armazenamento em flash) e backup incremental eficiente.
+
 
 \section{Estrutura de sistema de arquivos}
 
@@ -43,6 +57,36 @@ O sistema de arquivos btrfs não faz distinção de disco físico e lógico, sen
 O btrfs utiliza um sistema de escrita chamado de cópia em gravação(COW), em que um mesmo recurso é compartilhado entre diversos processos, até que seja modificado. Oque isto quer dizer é que diversos processos possuem um ponteiro para o mesmo endereço de processo, e o compartilham, até que um deles requisite um modificação, então é feita uma cópia privada do recurso para aquele processo, assim não afetando o dado que é compartilhado com outros processos. 
  
 \section{Snapshots}
+
+Snapshot permite que seja feito um backup instantâneo do sistema com ele em execução. O sistema marca um ponto no disco e isola o restante anterior como somente leitura e a partir dali as mudanças são acrescentadas separadamente, dessa forma pode-se retornar a um estado anterior do sistema, sendo um processo mais simples e eficiente.
+
+Para criar um snapshot dentro do sistema Btrfs usamos o seguinte comando:
+
+\textit{#btrfs subvolume snapshot /caminho/do/subvolume /caminho/do/snapshot}.
+
+Com o comando acima um novo snapshot será criado em seu sistema com todos os arquivos originais da pasta que foi usada de base. Ele só será montado quando o usuário montar a pasta em seu sistema através do comando mount ou /etc/fstab.
+
+Pode-se criar snapshot somente leitura utilizando o comando:
+
+\textit{#btrfs subvolume snapshot -r /caminho/do/subvolume /caminho/do/snapshot}.
+
+Os dados jamais serão alterados, apenas excluídos pelo usuário, podendo ser utilizado como uma base de dados fixa, como uma referência de backup ou como uma base default para instalação de outros subvolumes em novas instalações de SO.
+
+Algumas regras para criação de snapshots são:
+
+- Não existe snapshots recursivo;
+
+- Ter no máximo 12 snapshots por partição;
+
+- Devem ser criados no mesmo volume e disco que os dados originais;
+
+- Evitar snapshots de partições que possuam dependências entre si;
+
+- evitar snapshots que precisem de propriedades especiais ou pontos de montagem especiais para funcionar.
+
+Para deletarmos um snapshot utiliza-se o comando:
+
+\textit{#btrfs subvolume delete /caminho/do/subvolume}.
 
 \section{Vantagens e desvantagens}
 
