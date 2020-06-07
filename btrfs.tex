@@ -1,19 +1,23 @@
 \documentclass[12pt]{article}
-
 \usepackage{sbc-template}
+\usepackage{authblk}
 
 \usepackage{graphicx,url}
 
-%\usepackage[brazil]{babel}
-\usepackage[utf8]{inputenc}
+%\usepackage[brazil]{babel}   
+\usepackage[utf8]{inputenc}  
 
 
 \sloppy
 
 \title{Introduction to Brtfs}
 
-\author{Giovanni Crepaldi\inst{1}, Giovanni Crepaldi\inst{2}, Lucas Marcon Zampieri\inst{3}}
-
+\author[1]{Giovanni Crepaldi}
+\author[2]{Lucas Marcon Zampieri}
+\author[3]{Mauricio Sscherrer}
+\affil[1]{giovannecrepaldi@gmail.com}
+\affil[2]{zampierilucas@unisinos.br}
+\affil[3]{mauricio.sscherer@gmail.com} 
 \address{Universidade do Vale do Rio dos Sinos (Unisinos) \\
 Porto Alegre -- RS -- Brazil
 \nextinstitute
@@ -24,22 +28,20 @@ Porto Alegre -- RS -- Brazil
   Porto Alegre, BR.
 }
 
-\begin{document}
+\begin{document} 
 
 \maketitle
-
-\begin{abstract}
-
-\end{abstract}
-
-\begin{resumo}
-
-\end{resumo}
 
 \section{Informações gerais} \label{sec:firstpage}
 
 \section{Estrutura de sistema de arquivos}
 
+O sistema de arquivos btrs é consistido por árvores encadeadas. Árvores são separadas por nodos, que são ordenados em uma árvore auto-balanceada, do tipo b-tree\cite{B-tree}. Nodos internos possuem referências a outros nodos internos do nível superior.
+
+O sistema de arquivos btrfs não faz distinção de disco físico e lógico, sendo assim um endereço lógico pode referenciar um disco assim como N discos, de acordo com as configurações de RAID. Seus endereços lógicos antes de serem usados precisam ser convertidos para físicos, para isso existe um árvore chamada chunk-tree\cite{Btrfs-design}, Seu caminho reverso, isto é físico para lógico pode  ser convertido utilizando outra árvore chamada dev-tre.
+
+O btrfs utiliza um sistema de escrita chamado de cópia em gravação(COW), em que um mesmo recurso é compartilhado entre diversos processos, até que seja modificado. Oque isto quer dizer é que diversos processos possuem um ponteiro para o mesmo endereço de processo, e o compartilham, até que um deles requisite um modificação, então é feita uma cópia privada do recurso para aquele processo, assim não afetando o dado que é compartilhado com outros processos. 
+ 
 \section{Snapshots}
 
 \section{Vantagens e desvantagens}
@@ -47,6 +49,7 @@ Porto Alegre -- RS -- Brazil
 \section{Figuras e diagramas}\label{sec:figs}
 
 \begin{thebibliography}{9}
+
 \bibitem{Wikipedia}
 Btrfs on wikipedia.
 \\\texttt{https://pt.wikipedia.org/wiki/Btrfs}
@@ -55,6 +58,14 @@ Btrfs on wikipedia.
 Linux Foundation - Introduction to btrfs.
 \\\texttt{https://training.linuxfoundation.org/resources/\
 webinars/introduction-to-btrfs/}
+
+\bibitem{B-tree}
+Rodeh, Ohad (2007). B-trees, shadowing, and clones (PDF). 
+\\\texttt{https://www.usenix.org/legacy/events/lsf07/tech/rodeh.pdf}
+
+\bibitem{Btrfs-design}
+Wiki Kernel. Btrfs design.
+\\\texttt{https://btrfs.wiki.kernel.org/index.php/Btrfs_design}
 
 \bibitem{UnixUniverse}
 UnixUniverse.
@@ -65,11 +76,6 @@ Linux foundation.
 \\\texttt{https://www.linuxfoundation.org/blog/2010/11/\
 new-btrfs-free-tutorial-and-request-for-end-user-feedback-on-btrfs/}
 
-\bibitem{qwe}
-qwe
-\\\texttt{https://pt.qwe.wiki/wiki/Btrfs}
-
 \end{thebibliography}
 
 \end{document}
-
