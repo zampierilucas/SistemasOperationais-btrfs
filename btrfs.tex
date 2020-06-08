@@ -13,7 +13,7 @@
 \title{Introduction to Brtfs}
 
 \author[1]{Giovanni Crepaldi}
-\author[2]{Lucas Marcon Zampieri}
+\author[2]{Lucas  Zampieri}
 \author[3]{Mauricio Scherer}
 \affil[1]{giovannecrepaldi@gmail.com}
 \affil[2]{zampierilucas@unisinos.br}
@@ -47,7 +47,7 @@ esse motivo é sempre recomendável os usuários a executarem o Kernel mais mode
 
 O sistema possui uma ampla gama de recursos, alguns dos recursos são, armazenamento de arquivos baseado em extensão, embalagens de arquivos pequenos com economia de espaço, alocação dinâmica de inode, reconhecimento de SSD (armazenamento em flash) e backup incremental eficiente.
 
-
+\newpage
 \section{Estrutura de sistema de arquivos}
 
 O sistema de arquivos btrs é consistido por árvores encadeadas. Árvores são separadas por nodos, que são ordenados em uma árvore auto-balanceada, do tipo b-tree\cite{B-tree}. Nodos internos possuem referências a outros nodos internos do nível superior.
@@ -56,19 +56,20 @@ O sistema de arquivos btrfs não faz distinção de disco físico e lógico, sen
 
 O btrfs utiliza um sistema de escrita chamado de cópia em gravação(COW), em que um mesmo recurso é compartilhado entre diversos processos, até que seja modificado. Oque isto quer dizer é que diversos processos possuem um ponteiro para o mesmo endereço de processo, e o compartilham, até que um deles requisite um modificação, então é feita uma cópia privada do recurso para aquele processo, assim não afetando o dado que é compartilhado com outros processos. 
  
+ \newpage
 \section{Snapshots}
 
 Snapshot permite que seja feito um backup instantâneo do sistema com ele em execução. O sistema marca um ponto no disco e isola o restante anterior como somente leitura e a partir dali as mudanças são acrescentadas separadamente, dessa forma pode-se retornar a um estado anterior do sistema, sendo um processo mais simples e eficiente.
 
 Para criar um snapshot dentro do sistema Btrfs usamos o seguinte comando:
 
-\textit{#btrfs subvolume snapshot /caminho/do/subvolume /caminho/do/snapshot}.
+\textit{btrfs subvolume snapshot /caminho/do/subvolume /caminho/do/snapshot}.
 
 Com o comando acima um novo snapshot será criado em seu sistema com todos os arquivos originais da pasta que foi usada de base. Ele só será montado quando o usuário montar a pasta em seu sistema através do comando mount ou /etc/fstab.
 
 Pode-se criar snapshot somente leitura utilizando o comando:
 
-\textit{#btrfs subvolume snapshot -r /caminho/do/subvolume /caminho/do/snapshot}.
+\textit{btrfs subvolume snapshot -r /caminho/do/subvolume /caminho/do/snapshot}.
 
 Os dados jamais serão alterados, apenas excluídos pelo usuário, podendo ser utilizado como uma base de dados fixa, como uma referência de backup ou como uma base default para instalação de outros subvolumes em novas instalações de SO.
 
@@ -86,12 +87,14 @@ Algumas regras para criação de snapshots são:
 
 Para deletarmos um snapshot utiliza-se o comando:
 
-\textit{#btrfs subvolume delete /caminho/do/subvolume}.
+\textit{btrfs subvolume delete /caminho/do/subvolume}.
 
+\newpage
 \section{Vantagens e desvantagens}
 
-\section{Figuras e diagramas}\label{sec:figs}
+O sistema de arquivos Btrfs tem diversas vantagens como por exemplo a alocação dinâmica de inode, que evita os limites Ext2 / 3 / 4 em números de inodes, são alocados dinamicamente conforme necessário o limite rígido é $2^{64}$ que são cerca de 18,4 quintilhões, empacotamento eficiente de arquivos pequenos que isto acaba sendo importante para descktops com dezenas de milhares de arquivos, compactação em LZO (que é muito rápida), integridade de dados em razão do processo de depuração em segundo plano para localizar e corrigir erros em arquivos com cópias redundantes. Pode também na maioria das vezes se auto-recuperar por falhas em algumas configurações por causa da natureza de cópia em gravação, lidar com arquivos SWAP e partições SWAP, suporta Criptografia com EncFS ou TrueCrypt, envia e recebe (salva diferenças entre instantâneos para um fluxo binário, entre outras. Por ser um sistema de arquivos com muitas vantagens, acaba sendo bem pesado e complexo utilizá-lo, o usuário precisa conhece-lo muito para poder utilizá-lo com máxima eficácia.
 
+\newpage
 \begin{thebibliography}{9}
 
 \bibitem{Wikipedia}
@@ -119,6 +122,15 @@ UnixUniverse.
 Linux foundation.
 \\\texttt{https://www.linuxfoundation.org/blog/2010/11/\
 new-btrfs-free-tutorial-and-request-for-end-user-feedback-on-btrfs/}
+
+\bibitem{DioLinux}
+DioLinux
+\\\texttt{https://plus.diolinux.com.br/t/discussao-btrfs-vs-ext4/9819/5}
+
+\bibitem{Sobre Linux}
+Sobre Linux
+\\\texttt{https://sobrelinux.info/questions/773150/\
+what-are-the-advantages-of-btrfs-for-end-users}
 
 \end{thebibliography}
 
